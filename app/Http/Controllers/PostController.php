@@ -50,10 +50,32 @@ class PostController extends Controller {
 	 */
 	public function store(PostFormRequest $request)
 	{
+		//Tags Text Validation
+		$this->validate($request, array(
+				'tags' => 'max:255'
+			));		
+		
 		$post = new Posts();
 		$post->title = $request->get('title');
 		$post->body = $request->get('body');
 		$post->slug = str_slug($post->title);
+		
+		//If there are tags, remove duplicates and resave the string
+		$_tags = $request->get('tags');
+		if (strlen(trim($_tags)) > 0) 
+		{
+			//Getting all the tags
+			$tagsarr = array_map('trim', explode(',', strtoupper($_tags)));
+			
+			//Removing the duplicates
+			$tagsarr = array_unique($tagsarr);
+			$_tags = implode(",",$tagsarr);
+			$post->tags = $_tags;
+		}
+		else
+		{
+			$post->tags = null;
+		}
 		
 		$duplicate = Posts::where('slug',$post->slug)->first();
 		if($duplicate)

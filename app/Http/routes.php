@@ -50,6 +50,9 @@ Route::group(['middleware' => ['auth']], function()
 	// delete comment
 	Route::post('comment/delete/{id}','CommentController@distroy');
 	
+	
+	//create analytics
+	Route::get('show-analytics', 'AnalyticsController@show_all');
 });
 
 //users profile

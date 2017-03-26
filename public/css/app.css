@@ -6231,3 +6231,8 @@ label,
 .checkbox label {
   font-weight: 300;
 }
+#statsword {
+  display: inline-block;
+  width: 200px;
+  word-wrap: break-word;
+}
