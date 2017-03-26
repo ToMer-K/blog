@@ -26,8 +26,8 @@ class AnalyticsController extends Controller {
 			//Getting all the tags
 			$tags = str_getcsv($post->tags,',');
 			
-			//Cutting the <p> and </p> from the post and getting only alphabetical words
-			$words = str_word_count(substr($post->body, 3, strlen($post->body) -7),1);
+			//Cutting the <p> and </p> from the post and getting only alphabetical words (in uppercass)
+			$words = str_word_count(substr(strtoupper($post->body), 3, strlen($post->body) -7),1);
 			
 			//Going over the tags and creating a tag->(word->count) hash table
 			foreach ($tags as $tag) {
@@ -38,7 +38,6 @@ class AnalyticsController extends Controller {
 					//If the word contains less than 2 letters there it is not a word
 					if (strlen($word) < 2) continue;
 					//Ignoring case
-					$word = strtoupper($word);
 					if (array_key_exists($word, $tagsWordsArr[$tag])) {
 						$tagsWordsArr[$tag][$word]++;
 					}
